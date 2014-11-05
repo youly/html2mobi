@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+if ARGV[0].nil?
+    puts 'Usage: html2mobi url [path]'
+    puts 'For Example: html2mobi http://lz.book.sohu.com/book-28153.html ./book'
+    exit(1)
+end
+
+url = ARGV[0]
+path = File.expand_path(File.dirname(__FILE__)) + '/' + '__mobi__'
+
+unless ARGV[1].nil?
+    path = File.expand_path(ARGV[1])
+end
+
+if File.file? path
+    puts path + ' is a file, need a directory'
+    exit(1)
+end
+
+unless File.directory? path
+    Dir.mkdir(path)
+end
+
+if File.file? File.dirname(__FILE__) + '/../lib/html2mobi.rb'
+    require File.dirname(__FILE__) + '/../lib/html2mobi.rb'
+else
+    require 'html2mobi'
+end
+
+if !url.include? 'soho'
+    d = Html2mobi::Download_sohu.new url, path
+    d.generate_mobi_book
+
+else
+    puts "current only support suho"
+    exit(1)
+end
