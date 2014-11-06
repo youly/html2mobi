@@ -28,11 +28,11 @@ else
     require 'html2mobi'
 end
 
-if !url.include? 'soho'
+if url.include? 'sohu'
     d = Html2mobi::Download_sohu.new url, path
     d.generate_mobi_book
 
 else
-    puts "current only support suho"
+    puts "currently only support suhu"
     exit(1)
 end

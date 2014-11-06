@@ -2,6 +2,8 @@
 
 将搜狐读书频道html页面转换成mobi格式
 
+依赖KindleGen
+
 ## Installation
 
 Add this line to your application's Gemfile:
