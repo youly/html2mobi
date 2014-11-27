@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "kindler", "~> 0.5.0"
   spec.add_dependency "nokogiri", "~> 1.6.3"
+  spec.add_dependency "mail", "~> 2.6.3"
 end

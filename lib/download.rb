@@ -1,12 +1,29 @@
 require 'uri'
 require 'open-uri'
+require 'json'
+require 'mail'
 
 module Html2mobi
     class Download
         def initialize(url, save_path)
+            @home = File.expand_path('~') + '/.html2mobi'
+            unless File.directory? @home
+                Dir.mkdir @home
+            end
             @uri = URI.parse(url)
             @url = url
             @save_path = save_path
+            @config = nil
+            load_config
+        end
+
+        def load_config
+            file = @home + '/config.json'
+            if !File.exist? file
+                puts '配置文件不存在，请创建你的配置文件：' + file
+            else
+                @config = JSON.load(File.new(file))
+            end
         end
 
         #下载目录
@@ -55,7 +72,7 @@ module Html2mobi
             end
 
             if download_error
-                puts 'exit becase download error, please retry!'
+                puts 'exit becase download error, please retry: html2mobi ' + @url + ' ' + @save_path
                 exit(1)
             end
         end
@@ -81,6 +98,44 @@ module Html2mobi
             chapter_dir = @save_path + '/chapter'
             Dir.mkdir(chapter_dir) unless File.directory? chapter_dir
             chapter_dir + '/' + chapter
+        end
+
+        def kindle_output_path
+            output_path = @save_path + '/kindle'
+            Dir.mkdir(output_path) unless File.directory? output_path
+            output_path
+        end
+
+        def kindle_mobi
+            kindle_output_path + '/' + get_book_name + '.mobi'
+        end
+
+        def mail_to
+            if @config.nil?
+                puts '配置文件不存在，邮件没有发送'
+                exit(1)
+            end
+            puts '将电子书发送至：' + @config['to']
+            config = {
+                :address => @config['server'],
+                :port => @config['port'],
+                :domain => @config['server'],
+                :user_name => @config['user_name'],
+                :password => @config['password'],
+                :ssl => @config['ssl']
+            }
+            Mail.defaults { delivery_method :smtp, config }
+            mail = Mail.new
+            mail.charset = 'UTF-8'
+            mail.from @config['user_name']
+            mail.to @config['to']
+            mail.subject get_book_name
+            mail.body 'this is a auto_generated mobi:' + get_book_name
+
+            mail.convert_to_multipart
+            filename = get_book_name + '.mobi'
+            mail.attachments[filename] = File.open(kindle_mobi, 'rb') { |f| f.read }
+            mail.deliver!
         end
 
         #获取书籍下载url

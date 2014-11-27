@@ -81,6 +81,7 @@ module Html2mobi
             puts '下载章节…'
             download_chapters
             do_generage
+            mail_to
         end
 
         def do_generage
@@ -93,6 +94,7 @@ module Html2mobi
                 :author => author,
                 :silent => false,
                 :debug => false,
+                :output_dir => kindle_output_path
             }
 
             book = Kindler::Book.new book_options

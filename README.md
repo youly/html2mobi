@@ -1,22 +1,28 @@
 # Html2mobi
 
-将搜狐读书频道html页面转换成mobi格式
+将在线html页面转换成mobi格式并自动发送至你的kindle，当前支持搜狐读书频道 http://lz.book.sohu.com
 
-依赖KindleGen
+1、依赖KindleGen、kindler、mail，nokogiri
+
+2、电子书生成后自动发送到邮件，请添加配置文件 ~/.html2mobi/config.json
+
+    {
+        "server":"your kindle sync smtp server",
+        "port":465,
+        "user_name":"your name",
+        "password":"your password",
+        "ssl":"true",
+        "to":"who send to"
+    }
+
+3、支持下载失败重试，按照提示复制重试命令并执行
+
+4、下载电子书示例 html2mobi http://lz.book.sohu.com/book-13200.html
+
+5、生成的电子书会在本地存储一份，目录是 ~/.html2mobi，你也可以指定一个目录
+
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'html2mobi'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install html2mobi
 
