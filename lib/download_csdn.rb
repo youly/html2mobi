@@ -5,9 +5,10 @@ require 'download'
 require 'kindler'
 
 module Html2mobi
-    class Download_sohu < Download
+    class Download_csdn < Download
 
     	UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36"
+    	
     	def self.support?(url)
     		url.include? 'blog.csdn.net'
     	end
