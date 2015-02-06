@@ -1,6 +1,6 @@
 # Html2mobi
 
-将在线html页面转换成mobi格式并自动发送至你的kindle，当前支持搜狐读书频道 http://lz.book.sohu.com
+将在线html页面转换成mobi格式并自动发送至你的kindle，当前支持搜狐读书频道 http://lz.book.sohu.com，csdn博客 http://blog.csdn.net
 
 1、依赖KindleGen、kindler、mail，nokogiri
 

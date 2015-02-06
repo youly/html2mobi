@@ -5,6 +5,9 @@ require 'mail'
 
 module Html2mobi
     class Download
+        
+        UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36"
+
         def initialize(url, save_path)
             @home = File.expand_path('~') + '/.html2mobi'
             unless File.directory? @home
@@ -48,7 +51,7 @@ module Html2mobi
                 strArr = line.split('|')
                 begin
                     if (strArr[2].strip == 'no')
-                        data = open(strArr[1])
+                        data = open(strArr[1], "User-Agent" => UA)
                         File.open(chapter_path(strArr[0]), 'w') do |f|
                             f.write(data.read)
                             f.close

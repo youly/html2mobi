@@ -1,12 +1,8 @@
 #!/usr/bin/env ruby
+require 'html2mobi'
 
-home = File.expand_path('~')
-config_dir = home + '/.html2mobi'
-
-unless File.directory? config_dir
-    puts '创建配置目录：' + config_dir
-    Dir.mkdir(config_dir)
-end
+Html2mobi::Environment.setup
+config_dir = Html2mobi::Environment.basedir
 
 if ARGV[0].nil?
     puts 'Usage: html2mobi url [path]'
@@ -21,27 +17,18 @@ path = config_dir + '/' + '__mobi__' + time.strftime("%Y_%m_%d_%H_%M_%S")
 unless ARGV[1].nil?
     path = File.expand_path(ARGV[1])
 end
-puts '电子书存储目录：' + path
 
 if File.file? path
     puts path + ' is a file, need a directory'
     exit(1)
 end
 
+puts '电子书存储目录：' + path
+
 unless File.directory? path
     Dir.mkdir(path)
 end
 
-if File.file? File.dirname(__FILE__) + '/../lib/html2mobi.rb'
-    require File.dirname(__FILE__) + '/../lib/html2mobi.rb'
-else
-    require 'html2mobi'
-end
+d = Html2mobi::Downloadfactory.create(url, path)
+d.generate_mobi_book
 
-if url.include? 'sohu'
-    d = Html2mobi::Download_sohu.new url, path
-    d.generate_mobi_book
-else
-    puts "currently only support suhu"
-    exit(1)
-end

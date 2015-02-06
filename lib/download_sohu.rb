@@ -6,6 +6,11 @@ require 'kindler'
 
 module Html2mobi
     class Download_sohu < Download
+
+        def self.support?(url)
+            url.include? 'lz.book.sohu.com'
+        end
+
         def download_index
             begin
                 unless File.exist? index_path
